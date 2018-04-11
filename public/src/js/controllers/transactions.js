@@ -75,6 +75,21 @@ function($scope, $rootScope, $routeParams, $location, Global, Transaction, Trans
   };
 
   var _processTX = function(tx) {
+    tx.vin = tx.vin.map(function(vin) {
+      if (vin.addr) {
+        vin.addr = $rootScope.formatAddress(vin.addr);
+      }
+      return vin;
+    });
+    tx.vout = tx.vout.map(function(vout) {
+      if (vout.scriptPubKey.addresses && vout.scriptPubKey.addresses.map) {
+        vout.scriptPubKey.addresses = vout.scriptPubKey.addresses.map(function(addr) {
+          return $rootScope.formatAddress(addr);
+        });
+      }
+      return vout;
+    });
+
     tx.vinSimple = _aggregateItems(tx.vin);
     tx.voutSimple = _aggregateItems(tx.vout);
   };
@@ -102,7 +117,7 @@ function($scope, $rootScope, $routeParams, $location, Global, Transaction, Trans
 
   var _byAddress = function () {
     TransactionsByAddress.get({
-      address: $routeParams.addrStr,
+      address: $rootScope.toLegacyAddress($routeParams.addrStr),
       pageNum: pageNum
     }, function(data) {
       _paginate(data);

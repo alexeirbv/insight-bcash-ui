@@ -1,0 +1,9 @@
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+  {{addressFormat.name}} <span class="caret"></span>
+</a>
+<ul class="dropdown-menu">
+<li ng-repeat="format in formats">
+  <a data-ng-click="setAddressFormat(format)" data-ng-class="{active: addressFormat == format}">{{format.name}}</a>
+</li>
+</ul>
+  

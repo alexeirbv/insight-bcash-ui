@@ -35,8 +35,12 @@ angular.module('insight.search').controller('SearchController',
         _resetSearch();
         $location.path('tx/' + q);
       }, function() { //tx not found, search on Address
+        var addrStr = q;
+        try {
+          addrStr = bchaddr.isCashAddress(q) || bchaddr.isBitpayAddress(q) ? bchaddr.toLegacyAddress(q) : q;
+        } catch (e) {}
         Address.get({
-          addrStr: q
+          addrStr: addrStr
         }, function() {
           _resetSearch();
           $location.path('address/' + q);

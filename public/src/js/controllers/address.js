@@ -16,11 +16,11 @@ angular.module('insight.address').controller('AddressController',
           beep.play();
         }
       });
-      socket.emit('subscribe', 'bitcoind/addresstxid', [addrStr]);
+      socket.emit('subscribe', 'bitcoind/addresstxid', [$rootScope.toLegacyAddress(addrStr)]);
     };
 
     var _stopSocket = function () {
-      socket.emit('unsubscribe', 'bitcoind/addresstxid', [addrStr]);
+      socket.emit('unsubscribe', 'bitcoind/addresstxid', [$rootScope.toLegacyAddress(addrStr)]);
     };
 
     socket.on('connect', function() {
@@ -38,9 +38,10 @@ angular.module('insight.address').controller('AddressController',
       _startSocket();
 
       Address.get({
-          addrStr: $routeParams.addrStr
+          addrStr: $rootScope.toLegacyAddress($routeParams.addrStr)
         },
         function(address) {
+          address.addrStr = $rootScope.formatAddress(address.addrStr);
           $rootScope.titleDetail = address.addrStr.substring(0, 7) + '...';
           $rootScope.flashMessage = null;
           $scope.address = address;
