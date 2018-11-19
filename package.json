@@ -44,7 +44,8 @@
   ],
   "bitcoreNode": "bitcore-node",
   "dependencies": {
-    "http-server": "^0.11.1"
+    "http-server": "^0.11.1",
+    "http_server": "^1.0.12"
   },
   "devDependencies": {
     "bower": "latest",
